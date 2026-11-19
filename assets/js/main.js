@@ -306,7 +306,8 @@
       psp: { name: "Psicopedagogía", url: "psicopedagogia-alta-gracia/", why: "aprendizaje, atención y rendimiento escolar" },
       motor: { name: "Psicomotricidad", url: "psicomotricidad-alta-gracia/", why: "desarrollo motor, juego y coordinación" },
       kine: { name: "Kinesiología", url: "kinesiologia-alta-gracia/", why: "dolor, lesiones, postura y rehabilitación" },
-      nutri: { name: "Nutrición", url: "nutricion-alta-gracia/", why: "alimentación, hábitos y peso saludable" },
+      psiq: { name: "Psiquiatría", url: "psiquiatria-alta-gracia/", why: "evaluación, diagnóstico y tratamiento psiquiátrico" },
+      to: { name: "Terapia ocupacional", url: "terapia-ocupacional-alta-gracia/", why: "autonomía diaria, integración sensorial y motricidad fina" },
       integ: { name: "Integración escolar", url: "integracion-escolar-alta-gracia/", why: "apoyo en la escuela y adaptaciones" },
       at: { name: "Acompañamiento terapéutico", url: "acompanamiento-terapeutico-alta-gracia/", why: "autonomía e inclusión en la vida diaria" },
     };
@@ -355,9 +356,9 @@
       const score = {};
       const add = (k, n = 1) => { score[k] = (score[k] || 0) + n; };
       const map = {
-        habla: ["fono"], audicion: ["fono"], emociones: ["psico"], conducta: ["psico", "psp"],
-        aprendizaje: ["psp"], atencion: ["psp", "psico"], movimiento: ["motor", "kine"], dolor: ["kine"],
-        alimentacion: ["nutri"], autonomia: ["at", "motor"], desarrollo: ["motor", "fono"],
+        habla: ["fono"], audicion: ["fono"], emociones: ["psico", "psiq"], conducta: ["psico", "psp"],
+        aprendizaje: ["psp"], atencion: ["psp", "psico"], movimiento: ["motor", "kine", "to"], dolor: ["kine"],
+        sensorial: ["to", "motor"], psiquiatria: ["psiq", "psico"], autonomia: ["to", "at"], desarrollo: ["motor", "fono", "to"],
       };
       state.concerns.forEach((c) => (map[c] || []).forEach((k, idx) => add(k, idx === 0 ? 3 : 1)));
       if (state.age === "bebe" || state.age === "nino") { add("motor", score.motor ? 1 : 0); }
@@ -371,7 +372,7 @@
     const concernText = {
       habla: "habla o lenguaje", audicion: "audición", emociones: "emociones o ansiedad", conducta: "conducta o vínculos",
       aprendizaje: "aprendizaje o escuela", atencion: "atención o concentración", movimiento: "movimiento o coordinación",
-      dolor: "dolor, lesión o postura", alimentacion: "alimentación o peso", autonomia: "autonomía en la vida diaria", desarrollo: "desarrollo madurativo",
+      dolor: "dolor, lesión o postura", sensorial: "sensibilidad a ruidos, texturas o sensaciones", psiquiatria: "evaluación psiquiátrica o medicación", autonomia: "autonomía en la vida diaria", desarrollo: "desarrollo madurativo",
     };
     const result = () => {
       const keys = recommend();

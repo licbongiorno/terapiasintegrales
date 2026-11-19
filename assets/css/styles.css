@@ -207,7 +207,7 @@ h1 { position: relative; z-index: 0; }
 .orbit__center .lm { width: 74%; height: auto; cursor: pointer; }
 @keyframes breathe { 50% { transform: scale(1.07); } }
 .orbit__chip {
-  --angle: calc(var(--a) * 60deg - 90deg);
+  --angle: calc(var(--a) * (360deg / 7) - 90deg);
   position: absolute; left: 50%; top: 50%;
   transform: rotate(var(--angle)) translate(var(--r)) rotate(calc(-1 * var(--angle))) translate(-50%, -50%);
   display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;
@@ -764,4 +764,37 @@ h2 { font-size: min(clamp(1.7rem, 4.2vw, 2.6rem), 7.6vw); }
   .hero__facts li { display: flex; align-items: baseline; gap: 12px; padding: 10px 16px; }
   .hero__facts strong { font-size: 1.35rem; min-width: 3.2ch; }
   .hero__facts span { font-size: .9rem; }
+}
+
+/* 7 especialidades: la última tarjeta, si queda sola, va centrada */
+@media (min-width: 600px) and (max-width: 1023px) {
+  .cards > li:last-child:nth-child(2n+1) { grid-column: 1 / -1; justify-self: center; width: calc(50% - 9px); }
+}
+@media (min-width: 1024px) {
+  .cards > li:last-child:nth-child(3n+1) { grid-column: 2; }
+}
+
+/* Celulares: el logo arriba y las 7 especialidades como etiquetas flotantes debajo */
+@media (max-width: 599px) {
+  .orbit { --r: 0px; width: 100%; aspect-ratio: auto; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 8px; padding-top: 4px; }
+  .orbit::before, .orbit::after { display: none; }
+  .orbit__center { position: relative; inset: auto; translate: none; flex-basis: auto; width: clamp(150px, 46vw, 190px); margin: 0 calc(50% - clamp(150px, 46vw, 190px) / 2) 12px;
+    box-shadow: var(--shadow), 0 0 0 10px rgb(255 255 255 / .6), 0 0 0 11px rgb(27 122 102 / .18); }
+  .orbit__chip { position: static; transform: none; font-size: .82rem; padding: 8px 12px; animation-name: bob-m; }
+}
+@keyframes bob-m { 50% { translate: 0 -5px; } }
+
+/* Círculo de 7 especialidades: radio y centro según el ancho disponible */
+@media (min-width: 600px) and (max-width: 1023px) {
+  .orbit { --r: 205px; }
+  .orbit__center { width: 170px; }
+}
+@media (min-width: 1024px) and (max-width: 1199px) {
+  .orbit { --r: 168px; }
+  .orbit__center { width: 132px; }
+  .orbit__chip { font-size: .76rem; padding: 8px 11px; }
+}
+@media (min-width: 1200px) {
+  .orbit { --r: 205px; }
+  .orbit__center { width: 168px; }
 }
