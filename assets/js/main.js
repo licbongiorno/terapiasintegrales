@@ -308,7 +308,7 @@
       kine: { name: "Kinesiología", url: "kinesiologia-alta-gracia/", why: "dolor, lesiones, postura y rehabilitación" },
       psiq: { name: "Psiquiatría", url: "psiquiatria-alta-gracia/", why: "evaluación, diagnóstico y tratamiento psiquiátrico" },
       to: { name: "Terapia ocupacional", url: "terapia-ocupacional-alta-gracia/", why: "autonomía diaria, integración sensorial y motricidad fina" },
-      integ: { name: "Integración escolar", url: "integracion-escolar-alta-gracia/", why: "apoyo en la escuela y adaptaciones" },
+      integ: { name: "Inclusión escolar", url: "inclusion-escolar-alta-gracia/", why: "apoyo en la escuela y adaptaciones" },
       at: { name: "Acompañamiento terapéutico", url: "acompanamiento-terapeutico-alta-gracia/", why: "autonomía e inclusión en la vida diaria" },
     };
     const state = { age: null, concerns: new Set(), school: null };

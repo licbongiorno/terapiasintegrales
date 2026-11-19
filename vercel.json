@@ -1,0 +1,8 @@
+{
+  "redirects": [
+    { "source": "/integracion-escolar-alta-gracia", "destination": "/inclusion-escolar-alta-gracia/", "permanent": true },
+    { "source": "/integracion-escolar-alta-gracia/", "destination": "/inclusion-escolar-alta-gracia/", "permanent": true },
+    { "source": "/nutricion-alta-gracia", "destination": "/", "permanent": true },
+    { "source": "/nutricion-alta-gracia/", "destination": "/", "permanent": true }
+  ]
+}

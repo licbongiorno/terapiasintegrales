@@ -148,6 +148,7 @@ def build_page(p):
               <div class="acc__body"><p>{esc(a)}</p></div>
             </details>""" for i, (q, a) in enumerate(p["faq"]))
 
+    closing = f'\n          <blockquote class="page-quote reveal"><p>{esc(p["closing"])}</p></blockquote>' if p.get("closing") else ""
     req = ""
     if p.get("requirements"):
         req = f"""
@@ -191,13 +192,13 @@ def build_page(p):
     <section class="section">
       <div class="container page-layout">
         <article class="prose" style="--c:{p['color']}">
-          <h2 class="reveal">{esc(p['name'])} con mirada interdisciplinaria</h2>
+          <h2 class="reveal">{esc(p.get('what_title') or p['name'] + ' con mirada interdisciplinaria')}</h2>
 {chr(10).join(f'          <p class="reveal">{esc(t)}</p>' for t in p['what'])}
 
-          <h2 class="reveal">¿Cuándo consultar?</h2>
+          <h2 class="reveal">{esc(p.get('when_title') or '¿Cuándo consultar?')}</h2>
           <ul class="checks-ink reveal">
 {li(p['when'])}
-          </ul>
+          </ul>{closing}
 
           <h2 class="reveal">Cómo trabajamos</h2>
           <ul class="checks-ink reveal">
@@ -225,6 +226,10 @@ def build_page(p):
               <svg aria-hidden="true" width="18" height="18"><use href="#i-wa"/></svg> Escribinos
             </a>
             <p style="margin:14px 0 0;text-align:center"><a href="tel:+5493515318080">o llamá al 0351 531-8080</a></p>
+            <button type="button" class="share-btn share-btn--light js-share">
+              <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/></svg>
+              Compartir esta página
+            </button>
           </div>
         </aside>
       </div>

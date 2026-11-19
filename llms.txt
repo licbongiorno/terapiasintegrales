@@ -1,6 +1,6 @@
 # Terapias Integrales
 
-> Centro de salud interdisciplinario en Alta Gracia, Córdoba, Argentina. Atiende a niños, adolescentes y adultos en psicología, psiquiatría, fonoaudiología, psicopedagogía, psicomotricidad, terapia ocupacional y kinesiología, con programas de integración escolar y acompañamiento terapéutico. Atención particular y por obras sociales.
+> Centro de salud interdisciplinario en Alta Gracia, Córdoba, Argentina. Atiende a niños, adolescentes y adultos en psicología, psiquiatría, fonoaudiología, psicopedagogía, psicomotricidad, terapia ocupacional y kinesiología, con programas de inclusión escolar y acompañamiento terapéutico. Atención particular y por obras sociales.
 
 ## Datos clave
 - Nombre: Terapias Integrales
@@ -18,30 +18,30 @@
 - Psicología: atención clínica y acompañamiento emocional.
 - Psiquiatría: evaluación, diagnóstico y tratamiento psiquiátrico, articulado con psicología y el equipo.
 - Fonoaudiología: evaluación y tratamiento de la comunicación, el lenguaje y la audición.
-- Psicopedagogía: abordaje de los procesos de aprendizaje y el desarrollo cognitivo.
+- Psicopedagogía: evaluación, prevención y acompañamiento de los procesos de aprendizaje (lectura, escritura, matemática, atención, memoria, funciones ejecutivas, organización y estrategias de estudio), con mirada integral e interdisciplinaria.
 - Psicomotricidad: desarrollo motor, corporal y vincular.
 - Terapia ocupacional: autonomía en las actividades de la vida diaria, integración sensorial y motricidad fina.
 - Kinesiología: rehabilitación física, RPG y fisioterapia.
 
 ## Programas
-- Integración escolar: trabajo articulado con instituciones educativas para trayectorias escolares inclusivas.
+- Inclusión escolar (en Córdoba, con Docentes de Apoyo a la Inclusión, DAI; en otras provincias se las llama MAI o maestras integradoras): trabajo articulado con instituciones educativas para trayectorias escolares inclusivas.
 - Acompañamiento terapéutico: apoyo cotidiano personalizado para favorecer la autonomía y la inclusión social.
 
 ## Enfoque
 Los profesionales trabajan en equipo y articulan sus miradas para abordar cada caso de manera integral y personalizada, acompañando al paciente, a su familia y a su entorno (escuela, comunidad).
 
 ## Trabajá con nosotros
-El centro recibe postulaciones de profesionales de psicología, fonoaudiología, psicopedagogía, psicomotricidad, kinesiología, psiquiatría, terapia ocupacional, acompañamiento terapéutico y maestras/os de integración. Se postulan por WhatsApp (+54 9 351 531-8080) enviando su CV.
+El centro recibe postulaciones de profesionales de psicología, fonoaudiología, psicopedagogía, psicomotricidad, kinesiología, psiquiatría, terapia ocupacional, acompañamiento terapéutico y docentes de apoyo a la inclusión (DAI). Se postulan por WhatsApp (+54 9 351 531-8080) enviando su CV.
 
 ## Páginas
 - [Inicio](https://licbongiorno.github.io/terapiasintegrales/): especialidades, orientador para elegir especialidad, programas, preguntas frecuentes, trabajá con nosotros, ubicación y contacto.
 - [Psicología en Alta Gracia](https://licbongiorno.github.io/terapiasintegrales/psicologia-alta-gracia/): Psicología en Alta Gracia para niños, adolescentes y adultos. Acompañamiento emocional con mirada interdisciplinaria. Turnos por WhatsApp.
 - [Psiquiatría en Alta Gracia](https://licbongiorno.github.io/terapiasintegrales/psiquiatria-alta-gracia/): Psiquiatría en Alta Gracia: evaluación, diagnóstico y tratamiento psiquiátrico, articulado con psicología y el equipo interdisciplinario.
 - [Fonoaudiología en Alta Gracia](https://licbongiorno.github.io/terapiasintegrales/fonoaudiologia-alta-gracia/): Fonoaudiología en Alta Gracia: evaluación y tratamiento del lenguaje, el habla, la voz, la deglución y la audición en niños y adultos.
-- [Psicopedagogía en Alta Gracia](https://licbongiorno.github.io/terapiasintegrales/psicopedagogia-alta-gracia/): Psicopedagogía en Alta Gracia: evaluación y tratamiento de dificultades de aprendizaje, atención y lectoescritura. Trabajo con la escuela.
+- [Psicopedagogía en Alta Gracia](https://licbongiorno.github.io/terapiasintegrales/psicopedagogia-alta-gracia/): Psicopedagogía en Alta Gracia: evaluación, prevención y acompañamiento de los procesos de aprendizaje, con mirada integral e interdisciplinaria.
 - [Psicomotricidad en Alta Gracia](https://licbongiorno.github.io/terapiasintegrales/psicomotricidad-alta-gracia/): Psicomotricidad en Alta Gracia: desarrollo motor, corporal y vincular a través del juego. Atención de bebés y niños con mirada interdisciplinaria.
 - [Kinesiología en Alta Gracia](https://licbongiorno.github.io/terapiasintegrales/kinesiologia-alta-gracia/): Kinesiología en Alta Gracia: rehabilitación física, RPG (reeducación postural global) y fisioterapia para niños y adultos. Turnos por WhatsApp.
 - [Terapia ocupacional en Alta Gracia](https://licbongiorno.github.io/terapiasintegrales/terapia-ocupacional-alta-gracia/): Terapia ocupacional en Alta Gracia: autonomía en la vida diaria, integración sensorial, motricidad fina y juego, para niños y adultos.
-- [Integración escolar en Alta Gracia](https://licbongiorno.github.io/terapiasintegrales/integracion-escolar-alta-gracia/): Integración escolar en Alta Gracia y Córdoba: maestras de apoyo a la integración, trabajo con la escuela y requisitos (CUD, informes, obra social).
+- [Inclusión escolar en Alta Gracia](https://licbongiorno.github.io/terapiasintegrales/inclusion-escolar-alta-gracia/): Inclusión escolar en Alta Gracia y Córdoba: docentes de apoyo a la inclusión (DAI), trabajo con la escuela y requisitos (CUD, informes, obra social).
 - [Acompañamiento terapéutico en Alta Gracia](https://licbongiorno.github.io/terapiasintegrales/acompanamiento-terapeutico-alta-gracia/): Acompañamiento terapéutico (AT) en Alta Gracia: apoyo cotidiano personalizado en casa, escuela y comunidad para favorecer la autonomía.
 - [Política de privacidad](https://licbongiorno.github.io/terapiasintegrales/privacidad/)
