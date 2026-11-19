@@ -10,6 +10,13 @@
   const $ = (s, c = document) => c.querySelector(s);
   const $$ = (s, c = document) => [...c.querySelectorAll(s)];
   const waLink = (text) => `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(text)}`;
+  // Envía eventos a la analítica si está instalada (GA4 / Plausible); si no, no hace nada.
+  const track = (name, params = {}) => {
+    try {
+      if (typeof window.gtag === "function") window.gtag("event", name, params);
+      if (typeof window.plausible === "function") window.plausible(name, { props: params });
+    } catch (_) { /* sin analítica */ }
+  };
 
   /* ---------- Toast ---------- */
   const toastEl = $(".toast");
@@ -159,7 +166,7 @@
     /* ---------- Parallax suave en el hero ---------- */
     const blobs = $$(".blob");
     const hero = $(".hero");
-    hero.addEventListener("pointermove", (e) => {
+    if (hero) hero.addEventListener("pointermove", (e) => {
       const x = e.clientX / window.innerWidth - 0.5, y = e.clientY / window.innerHeight - 0.5;
       blobs.forEach((b, i) => { b.style.translate = `${x * (i + 1) * 24}px ${y * (i + 1) * 24}px`; });
     });
@@ -205,112 +212,265 @@
     catch (_) { toast("No se pudo copiar. Número: 0351 531-8080"); }
   }));
 
-  /* ---------- "Consultar" desde tarjetas: precarga la especialidad ---------- */
-  const espSelect = $("#f-esp");
+  /* ---------- Utilidades de formularios ---------- */
   const markSelect = () => $$(".field select").forEach((sel) => sel.classList.toggle("has-value", !!sel.value));
   $$(".field select").forEach((sel) => sel.addEventListener("change", markSelect));
-  $$(".js-wa-topic").forEach((a) => a.addEventListener("click", () => {
-    const topic = a.dataset.topic;
-    const opt = [...espSelect.options].find((o) => o.text === topic);
-    if (opt) { espSelect.value = opt.text; markSelect(); }
-    setTimeout(() => $("#f-name").focus({ preventScroll: true }), 650);
-  }));
-
-  /* ---------- Formulario → WhatsApp ---------- */
-  const form = $("#contacto");
-  const msg = $("#f-msg"), counter = $(".field__count");
-  msg.addEventListener("input", () => { counter.textContent = `${msg.value.length}/600`; });
   const setError = (input, text) => {
     const field = input.closest(".field");
     field.classList.toggle("is-invalid", !!text);
     $(".field__error", field).textContent = text || "";
     input.setAttribute("aria-invalid", text ? "true" : "false");
   };
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const name = $("#f-name"), esp = espSelect, os = $("#f-os");
-    let ok = true;
-    if (name.value.trim().length < 2) { setError(name, "Contanos tu nombre, por favor."); ok = false; } else setError(name);
-    if (!esp.value) { setError(esp, "Elegí una especialidad (o \"No estoy seguro/a\")."); ok = false; } else setError(esp);
-    if (!ok) { $(".is-invalid input, .is-invalid select", form)?.focus(); return; }
-
-    const lines = [
-      "Hola Terapias Integrales, quisiera hacer una consulta por un turno.",
-      `• Nombre: ${name.value.trim()}`,
-      `• Especialidad: ${esp.value}`,
-      os.value.trim() && `• Obra social: ${os.value.trim()}`,
-      msg.value.trim() && `• Mensaje: ${msg.value.trim()}`,
-    ].filter(Boolean);
-    window.open(waLink(lines.join("\n")), "_blank", "noopener");
-    toast("Abriendo WhatsApp…");
-  });
-  ["#f-name", "#f-esp"].forEach((s) => $(s).addEventListener("input", (e) => {
+  const clearOnInput = (...sels) => sels.forEach((s) => $(s)?.addEventListener("input", (e) => {
     if (e.target.closest(".field").classList.contains("is-invalid")) setError(e.target);
   }));
+
+  /* ---------- Formulario de contacto → WhatsApp ---------- */
+  const form = $("#contacto");
+  const espSelect = $("#f-esp");
+  if (form && espSelect) {
+    // "Consultar" desde tarjetas: precarga la especialidad
+    $$(".js-wa-topic").forEach((a) => a.addEventListener("click", () => {
+      const opt = [...espSelect.options].find((o) => o.text === a.dataset.topic);
+      if (opt) { espSelect.value = opt.text; markSelect(); }
+      setTimeout(() => $("#f-name").focus({ preventScroll: true }), 650);
+    }));
+    const msg = $("#f-msg"), counter = $(".field__count");
+    msg.addEventListener("input", () => { counter.textContent = `${msg.value.length}/600`; });
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const name = $("#f-name"), os = $("#f-os");
+      let ok = true;
+      if (name.value.trim().length < 2) { setError(name, "Contanos tu nombre, por favor."); ok = false; } else setError(name);
+      if (!espSelect.value) { setError(espSelect, "Elegí una especialidad (o \"No estoy seguro/a\")."); ok = false; } else setError(espSelect);
+      if (!ok) { $(".is-invalid input, .is-invalid select", form)?.focus(); return; }
+      const lines = [
+        "Hola Terapias Integrales, quisiera hacer una consulta por un turno.",
+        `• Nombre: ${name.value.trim()}`,
+        `• Especialidad: ${espSelect.value}`,
+        os.value.trim() && `• Obra social: ${os.value.trim()}`,
+        msg.value.trim() && `• Mensaje: ${msg.value.trim()}`,
+      ].filter(Boolean);
+      track("whatsapp_form", { form: "contacto", especialidad: espSelect.value });
+      window.open(waLink(lines.join("\n")), "_blank", "noopener");
+      toast("Abriendo WhatsApp…");
+    });
+    clearOnInput("#f-name", "#f-esp");
+  }
 
   /* ---------- Trabajá con nosotros: chips + postulación ---------- */
   const profSelect = $("#j-prof");
-  const chips = $$(".chip");
-  const syncChips = () => chips.forEach((c) => c.setAttribute("aria-pressed", String(c.dataset.prof === profSelect.value)));
-  syncChips();
-  chips.forEach((chip) => chip.addEventListener("click", () => {
-    profSelect.value = chip.dataset.prof;
-    markSelect(); syncChips();
-    if (profSelect.closest(".field").classList.contains("is-invalid")) setError(profSelect);
-    if (window.matchMedia("(max-width: 959px)").matches) {
-      $("#postulacion").scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
-      setTimeout(() => $("#j-name").focus({ preventScroll: true }), 600);
-    }
-  }));
-  profSelect.addEventListener("change", syncChips);
-
   const joinForm = $("#postulacion");
-  joinForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const name = $("#j-name"), mat = $("#j-mat"), jmsg = $("#j-msg");
-    let ok = true;
-    if (name.value.trim().length < 2) { setError(name, "Contanos tu nombre, por favor."); ok = false; } else setError(name);
-    if (!profSelect.value) { setError(profSelect, "Elegí tu profesión."); ok = false; } else setError(profSelect);
-    if (!ok) { $(".is-invalid input, .is-invalid select", joinForm)?.focus(); return; }
-    const lines = [
-      "Hola Terapias Integrales, me gustaría sumarme al equipo.",
-      `• Nombre: ${name.value.trim()}`,
-      `• Profesión: ${profSelect.value}`,
-      mat.value.trim() && `• Matrícula: ${mat.value.trim()}`,
-      jmsg.value.trim() && `• Experiencia / disponibilidad: ${jmsg.value.trim()}`,
-      "Les envío mi CV a continuación.",
-    ].filter(Boolean);
-    window.open(waLink(lines.join("\n")), "_blank", "noopener");
-    toast("Abriendo WhatsApp… ¡No olvides adjuntar tu CV!");
-  });
-  ["#j-name", "#j-prof"].forEach((sel) => $(sel).addEventListener("input", (e) => {
-    if (e.target.closest(".field").classList.contains("is-invalid")) setError(e.target);
+  if (profSelect && joinForm) {
+    const chips = $$(".chip");
+    const syncChips = () => chips.forEach((c) => c.setAttribute("aria-pressed", String(c.dataset.prof === profSelect.value)));
+    syncChips();
+    chips.forEach((chip) => chip.addEventListener("click", () => {
+      profSelect.value = chip.dataset.prof;
+      markSelect(); syncChips();
+      if (profSelect.closest(".field").classList.contains("is-invalid")) setError(profSelect);
+      if (window.matchMedia("(max-width: 959px)").matches) {
+        joinForm.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+        setTimeout(() => $("#j-name").focus({ preventScroll: true }), 600);
+      }
+    }));
+    profSelect.addEventListener("change", syncChips);
+    joinForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const name = $("#j-name"), mat = $("#j-mat"), jmsg = $("#j-msg");
+      let ok = true;
+      if (name.value.trim().length < 2) { setError(name, "Contanos tu nombre, por favor."); ok = false; } else setError(name);
+      if (!profSelect.value) { setError(profSelect, "Elegí tu profesión."); ok = false; } else setError(profSelect);
+      if (!ok) { $(".is-invalid input, .is-invalid select", joinForm)?.focus(); return; }
+      const lines = [
+        "Hola Terapias Integrales, me gustaría sumarme al equipo.",
+        `• Nombre: ${name.value.trim()}`,
+        `• Profesión: ${profSelect.value}`,
+        mat.value.trim() && `• Matrícula: ${mat.value.trim()}`,
+        jmsg.value.trim() && `• Experiencia / disponibilidad: ${jmsg.value.trim()}`,
+        "Les envío mi CV a continuación.",
+      ].filter(Boolean);
+      track("whatsapp_form", { form: "postulacion", profesion: profSelect.value });
+      window.open(waLink(lines.join("\n")), "_blank", "noopener");
+      toast("Abriendo WhatsApp… ¡No olvides adjuntar tu CV!");
+    });
+    clearOnInput("#j-name", "#j-prof");
+  }
+
+  /* ---------- Orientador: ¿Qué especialidad necesito? ---------- */
+  const quiz = $("#orientador");
+  if (quiz) {
+    const SPECS = {
+      psico: { name: "Psicología", url: "psicologia-alta-gracia/", why: "acompañamiento emocional, conducta y vínculos" },
+      fono: { name: "Fonoaudiología", url: "fonoaudiologia-alta-gracia/", why: "habla, lenguaje, comunicación y audición" },
+      psp: { name: "Psicopedagogía", url: "psicopedagogia-alta-gracia/", why: "aprendizaje, atención y rendimiento escolar" },
+      motor: { name: "Psicomotricidad", url: "psicomotricidad-alta-gracia/", why: "desarrollo motor, juego y coordinación" },
+      kine: { name: "Kinesiología", url: "kinesiologia-alta-gracia/", why: "dolor, lesiones, postura y rehabilitación" },
+      nutri: { name: "Nutrición", url: "nutricion-alta-gracia/", why: "alimentación, hábitos y peso saludable" },
+      integ: { name: "Integración escolar", url: "integracion-escolar-alta-gracia/", why: "apoyo en la escuela y adaptaciones" },
+      at: { name: "Acompañamiento terapéutico", url: "acompanamiento-terapeutico-alta-gracia/", why: "autonomía e inclusión en la vida diaria" },
+    };
+    const state = { age: null, concerns: new Set(), school: null };
+    const steps = $$(".quiz__step", quiz);
+    const bar = $(".quiz__bar span", quiz);
+    const count = $(".quiz__count", quiz);
+    const back = $(".quiz__back", quiz);
+    const next = $(".quiz__next", quiz);
+    let cur = 0;
+
+    const canGo = () => (cur === 0 ? !!state.age : cur === 1 ? state.concerns.size > 0 : cur === 2 ? !!state.school : true);
+    const show = (i, dir = 1) => {
+      const prev = steps[cur];
+      cur = i;
+      steps.forEach((st, k) => { st.hidden = k !== i; });
+      if (!reduceMotion && steps[i].animate && prev !== steps[i]) {
+        steps[i].animate([{ opacity: 0, transform: `translateX(${dir * 40}px)` }, { opacity: 1, transform: "none" }], { duration: 450, easing: "cubic-bezier(.22,1,.36,1)" });
+      }
+      const total = steps.length - 1;
+      bar.style.transform = `scaleX(${Math.min(i, total) / total})`;
+      count.textContent = i < total ? `Paso ${i + 1} de ${total}` : "¡Listo!";
+      back.hidden = i === 0 || i === total;
+      next.hidden = i === total;
+      next.disabled = !canGo();
+      next.textContent = i === total - 1 ? "Ver recomendación" : "Siguiente";
+      const h = $("legend, h3", steps[i]);
+      if (h && i > 0) { h.setAttribute("tabindex", "-1"); h.focus({ preventScroll: true }); }
+    };
+
+    $$(".opt", quiz).forEach((opt) => opt.addEventListener("click", () => {
+      const group = opt.dataset.group, val = opt.dataset.value;
+      if (group === "concerns") {
+        state.concerns.has(val) ? state.concerns.delete(val) : state.concerns.add(val);
+        opt.setAttribute("aria-pressed", String(state.concerns.has(val)));
+      } else {
+        state[group] = val;
+        $$(`.opt[data-group="${group}"]`, quiz).forEach((o) => o.setAttribute("aria-pressed", String(o === opt)));
+        // Avance automático en preguntas de una sola respuesta
+        setTimeout(() => { if (steps[cur].contains(opt)) go(1); }, 280);
+      }
+      next.disabled = !canGo();
+    }));
+
+    const recommend = () => {
+      const score = {};
+      const add = (k, n = 1) => { score[k] = (score[k] || 0) + n; };
+      const map = {
+        habla: ["fono"], audicion: ["fono"], emociones: ["psico"], conducta: ["psico", "psp"],
+        aprendizaje: ["psp"], atencion: ["psp", "psico"], movimiento: ["motor", "kine"], dolor: ["kine"],
+        alimentacion: ["nutri"], autonomia: ["at", "motor"], desarrollo: ["motor", "fono"],
+      };
+      state.concerns.forEach((c) => (map[c] || []).forEach((k, idx) => add(k, idx === 0 ? 3 : 1)));
+      if (state.age === "bebe" || state.age === "nino") { add("motor", score.motor ? 1 : 0); }
+      if (state.age === "adulto" || state.age === "mayor") { delete score.motor; delete score.integ; }
+      if (state.school === "si") add("integ", 3);
+      let keys = Object.keys(score).sort((a, b) => score[b] - score[a]).slice(0, 3);
+      if (!keys.length) keys = ["psico"];
+      return keys;
+    };
+    const ageText = { bebe: "un bebé (0 a 3 años)", nino: "un niño/a (3 a 12 años)", adolescente: "un/a adolescente", adulto: "una persona adulta", mayor: "un adulto mayor" };
+    const concernText = {
+      habla: "habla o lenguaje", audicion: "audición", emociones: "emociones o ansiedad", conducta: "conducta o vínculos",
+      aprendizaje: "aprendizaje o escuela", atencion: "atención o concentración", movimiento: "movimiento o coordinación",
+      dolor: "dolor, lesión o postura", alimentacion: "alimentación o peso", autonomia: "autonomía en la vida diaria", desarrollo: "desarrollo madurativo",
+    };
+    const result = () => {
+      const keys = recommend();
+      const list = $(".quiz__result-list", quiz);
+      list.innerHTML = keys.map((k, i) => `
+        <li class="rec" style="--d:${i}">
+          <span class="rec__rank">${i === 0 ? "Recomendado" : "También puede ayudar"}</span>
+          <strong>${SPECS[k].name}</strong>
+          <span>${SPECS[k].why}</span>
+          <a href="${SPECS[k].url}">Conocer más →</a>
+        </li>`).join("");
+      const text = [
+        "Hola Terapias Integrales, usé el orientador de la web.",
+        `• Consulta para: ${ageText[state.age]}`,
+        `• Me preocupa: ${[...state.concerns].map((c) => concernText[c]).join(", ")}`,
+        state.school === "si" ? "• Necesitaría apoyo en la escuela" : null,
+        `• Sugerencia: ${keys.map((k) => SPECS[k].name).join(", ")}`,
+        "¿Podrían orientarme para pedir un turno?",
+      ].filter(Boolean).join("\n");
+      $(".quiz__wa", quiz).href = waLink(text);
+      track("orientador_resultado", { recomendado: SPECS[keys[0]].name });
+    };
+    const go = (d) => {
+      if (d > 0 && !canGo()) return;
+      const n = Math.max(0, Math.min(steps.length - 1, cur + d));
+      if (n === steps.length - 1) result();
+      show(n, d);
+    };
+    next.addEventListener("click", () => go(1));
+    back.addEventListener("click", () => go(-1));
+    $(".quiz__restart", quiz).addEventListener("click", () => {
+      state.age = null; state.school = null; state.concerns.clear();
+      $$(".opt", quiz).forEach((o) => o.setAttribute("aria-pressed", "false"));
+      show(0, -1);
+    });
+    // Gesto: deslizar a la izquierda / derecha para avanzar o volver
+    let sx = null;
+    quiz.addEventListener("touchstart", (e) => { sx = e.touches[0].clientX; }, { passive: true });
+    quiz.addEventListener("touchend", (e) => {
+      if (sx === null) return;
+      const dx = e.changedTouches[0].clientX - sx; sx = null;
+      if (Math.abs(dx) > 70) go(dx < 0 ? 1 : -1);
+    });
+    show(0);
+  }
+
+  /* ---------- Mapa: se carga solo al tocarlo (más liviano y privado) ---------- */
+  $$(".map-facade").forEach((btn) => btn.addEventListener("click", () => {
+    const iframe = document.createElement("iframe");
+    iframe.title = "Mapa: Terapias Integrales, Deán Funes 56, Alta Gracia";
+    iframe.loading = "lazy";
+    iframe.referrerPolicy = "no-referrer-when-downgrade";
+    iframe.src = btn.dataset.src;
+    iframe.className = "map__iframe";
+    btn.parentElement.classList.add("is-loaded");
+    btn.replaceWith(iframe);
+    track("mapa_abierto");
   }));
+
+  /* ---------- Compartir (Web Share API, con copia de enlace como alternativa) ---------- */
+  $$(".js-share").forEach((b) => b.addEventListener("click", async () => {
+    const data = { title: document.title, text: "Terapias Integrales · Centro interdisciplinario en Alta Gracia", url: location.href.split("#")[0] };
+    try {
+      if (navigator.share) { await navigator.share(data); track("compartir"); }
+      else { await navigator.clipboard.writeText(data.url); toast("Enlace copiado ✓"); }
+    } catch (_) { /* cancelado */ }
+  }));
+
+  /* ---------- Medición de clics en WhatsApp / teléfono (si hay analítica) ---------- */
+  document.addEventListener("click", (e) => {
+    const a = e.target.closest('a[href*="wa.me/549351531"], a[href^="tel:"]');
+    if (a) track(a.href.startsWith("tel:") ? "click_telefono" : "click_whatsapp", { ubicacion: a.className || "link" });
+  });
 
   /* ---------- Burbuja del botón flotante ---------- */
   const wa = $(".wa-float");
-  setTimeout(() => {
+  if (wa) setTimeout(() => {
     wa.classList.add("show-tip");
     setTimeout(() => wa.classList.remove("show-tip"), 5000);
   }, 4000);
 
   /* ---------- Logo animado: se arma figura por figura ---------- */
-  const build = (svg) => { svg.classList.remove("is-built"); void svg.getBoundingClientRect(); svg.classList.add("is-built"); };
+  const build = (svg) => { if (!svg) return; svg.classList.remove("is-built"); void svg.getBoundingClientRect(); svg.classList.add("is-built"); };
   const headerLogo = $(".header .lm"), heroLogo = $(".lm--hero"), footerLogo = $(".lm--footer");
   const buildPage = () => { build(headerLogo); build(heroLogo); };
 
-  const footIO = new IntersectionObserver((en) => {
-    if (en[0].isIntersecting) { build(footerLogo); footIO.disconnect(); }
-  }, { threshold: 0.5 });
-  footIO.observe(footerLogo);
-
+  if (footerLogo) {
+    const footIO = new IntersectionObserver((en) => {
+      if (en[0].isIntersecting) { build(footerLogo); footIO.disconnect(); }
+    }, { threshold: 0.5 });
+    footIO.observe(footerLogo);
+  }
   // Gesto: tocar el logo grande lo vuelve a armar
-  heroLogo.addEventListener("click", () => build(heroLogo));
+  heroLogo?.addEventListener("click", () => build(heroLogo));
 
   const splash = $(".splash");
   let seen = false;
   try { seen = sessionStorage.getItem("ti-splash") === "1"; } catch (_) { /* sin storage */ }
-  if (!reduceMotion && !seen) {
+  if (splash && !reduceMotion && !seen) {
     try { sessionStorage.setItem("ti-splash", "1"); } catch (_) { /* sin storage */ }
     splash.classList.add("is-on");
     document.body.classList.add("splash-lock");
@@ -320,20 +480,21 @@
       splash.classList.add("is-out");
       document.body.classList.remove("splash-lock");
       buildPage();
-      setTimeout(() => splash.remove(), 700);
+      setTimeout(() => splash.remove(), 600);
     };
     requestAnimationFrame(() => requestAnimationFrame(() => {
       splash.classList.add("is-play");
       build($(".lm", splash));
     }));
-    setTimeout(close, 2600);
+    setTimeout(close, 1500);
     splash.addEventListener("click", close);
     document.addEventListener("keydown", close, { once: true });
   } else {
-    splash.remove();
+    splash?.remove();
     buildPage();
   }
 
   /* ---------- Año del footer ---------- */
-  $("#year").textContent = new Date().getFullYear();
+  const year = $("#year");
+  if (year) year.textContent = new Date().getFullYear();
 })();
