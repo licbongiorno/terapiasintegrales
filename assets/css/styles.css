@@ -401,7 +401,7 @@ h1 { position: relative; z-index: 0; }
 .footer__about { margin-top: 16px; max-width: 40ch; font-size: .95rem; }
 .footer__title { color: #fff; font-size: 1rem; margin-bottom: 14px; }
 .footer ul { display: grid; gap: 10px; font-size: .95rem; }
-.footer__bottom { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 20px 0 100px; border-top: 1px solid rgb(255 255 255 / .1); font-size: .88rem; }
+.footer__bottom { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; padding: 20px 0 100px; border-top: 1px solid rgb(255 255 255 / .1); font-size: .88rem; }
 .footer__bottom p { margin: 0; }
 .to-top { width: 44px; height: 44px; flex: none; border-radius: 50%; display: grid; place-items: center; background: rgb(255 255 255 / .08); font-size: 1.1rem; }
 .to-top:hover { background: var(--green); color: #fff !important; }
@@ -536,3 +536,57 @@ body.splash-lock { overflow: hidden; }
 .perk:nth-child(2) .perk__icon { background: linear-gradient(135deg, var(--purple), var(--pink)); }
 .perk:nth-child(3) .perk__icon { background: linear-gradient(135deg, var(--coral), #F5B21B); }
 .perk__icon svg { width: 22px; height: 22px; }
+
+/* ==========================================================
+   Crédito del diseñador
+   ========================================================== */
+.credit {
+  position: relative; display: inline-flex; align-items: center; gap: 12px;
+  padding: 8px 18px 8px 8px; border-radius: 999px; text-decoration: none;
+  background: rgb(255 255 255 / .05); isolation: isolate; overflow: hidden;
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / .12);
+  transition: box-shadow .4s var(--ease), transform .4s var(--ease), background .4s;
+}
+.credit::before { /* borde de colores animado al pasar el mouse */
+  content: ""; position: absolute; inset: -2px; z-index: -2; border-radius: inherit; opacity: 0; transition: opacity .4s;
+  background: conic-gradient(from var(--ang, 0deg), var(--l-mint), var(--l-purple), var(--l-yellow), var(--blue), var(--l-orange), var(--l-mint));
+  animation: credit-spin 3s linear infinite;
+}
+.credit::after { content: ""; position: absolute; inset: 1.5px; z-index: -1; border-radius: inherit; background: #0B2427; opacity: 0; transition: opacity .4s; }
+@property --ang { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+@keyframes credit-spin { to { --ang: 360deg; } }
+.credit:hover, .credit:focus-visible { transform: translateY(-2px); box-shadow: 0 14px 30px -12px rgb(108 240 208 / .45); }
+.credit:hover::before, .credit:hover::after, .credit:focus-visible::before, .credit:focus-visible::after { opacity: 1; }
+.credit__badge {
+  flex: none; width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; color: #0B2427;
+  background: linear-gradient(135deg, var(--l-mint), var(--l-lime));
+  transition: transform .6s cubic-bezier(.34, 1.56, .64, 1);
+}
+.credit:hover .credit__badge { transform: rotate(-12deg) scale(1.08); }
+.credit__text { display: grid; line-height: 1.2; }
+.credit__small { font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: #94A3B8; }
+.credit__name {
+  font: 700 .98rem var(--f-head); color: #fff;
+  background: linear-gradient(90deg, #fff 0%, #fff 40%, var(--l-mint) 50%, #fff 60%, #fff 100%) 100% 0 / 250% 100%;
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+  animation: credit-shine 5s ease-in-out infinite;
+}
+@keyframes credit-shine { 0%, 60% { background-position: 100% 0; } 100% { background-position: -50% 0; } }
+.credit__cta {
+  display: inline-flex; align-items: center; gap: 6px; max-width: 0; opacity: 0; white-space: nowrap; overflow: hidden;
+  font-size: .84rem; color: var(--l-mint);
+  transition: max-width .6s var(--ease), opacity .4s var(--ease), margin .6s var(--ease);
+}
+.credit__cta strong { color: #fff; }
+.credit:hover .credit__cta, .credit:focus-visible .credit__cta { max-width: 260px; opacity: 1; margin-left: 4px; }
+/* En pantallas táctiles el llamado queda siempre visible */
+@media (hover: none) {
+  .credit { flex-wrap: wrap; border-radius: 22px; padding-right: 14px; }
+  .credit__cta { max-width: none; opacity: 1; flex-basis: 100%; padding: 4px 0 2px 50px; }
+}
+@media (max-width: 799px) {
+  .footer__bottom { flex-direction: column; align-items: flex-start; }
+  .footer__bottom .to-top { position: absolute; right: 0; top: 16px; }
+  .footer__bottom { position: relative; }
+  .footer__bottom p { padding-right: 56px; }
+}
