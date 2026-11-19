@@ -255,6 +255,46 @@
     setTimeout(() => wa.classList.remove("show-tip"), 5000);
   }, 4000);
 
+  /* ---------- Logo animado: se arma figura por figura ---------- */
+  const build = (svg) => { svg.classList.remove("is-built"); void svg.getBoundingClientRect(); svg.classList.add("is-built"); };
+  const headerLogo = $(".header .lm"), heroLogo = $(".lm--hero"), footerLogo = $(".lm--footer");
+  const buildPage = () => { build(headerLogo); build(heroLogo); };
+
+  const footIO = new IntersectionObserver((en) => {
+    if (en[0].isIntersecting) { build(footerLogo); footIO.disconnect(); }
+  }, { threshold: 0.5 });
+  footIO.observe(footerLogo);
+
+  // Gesto: tocar el logo grande lo vuelve a armar
+  heroLogo.addEventListener("click", () => build(heroLogo));
+
+  const splash = $(".splash");
+  let seen = false;
+  try { seen = sessionStorage.getItem("ti-splash") === "1"; } catch (_) { /* sin storage */ }
+  if (!reduceMotion && !seen) {
+    try { sessionStorage.setItem("ti-splash", "1"); } catch (_) { /* sin storage */ }
+    splash.classList.add("is-on");
+    document.body.classList.add("splash-lock");
+    let done = false;
+    const close = () => {
+      if (done) return; done = true;
+      splash.classList.add("is-out");
+      document.body.classList.remove("splash-lock");
+      buildPage();
+      setTimeout(() => splash.remove(), 700);
+    };
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      splash.classList.add("is-play");
+      build($(".lm", splash));
+    }));
+    setTimeout(close, 2600);
+    splash.addEventListener("click", close);
+    document.addEventListener("keydown", close, { once: true });
+  } else {
+    splash.remove();
+    buildPage();
+  }
+
   /* ---------- Año del footer ---------- */
   $("#year").textContent = new Date().getFullYear();
 })();

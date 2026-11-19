@@ -1,9 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Terapias Integrales">
-  <title>Terapias Integrales</title>
-  <circle cx="32" cy="32" r="30" fill="#ECFDF5"/>
-  <path d="M32 50c-9-6-15-13-15-21a9 9 0 0 1 15-6.5A9 9 0 0 1 47 29c0 8-6 15-15 21z" fill="#10B981"/>
-  <path d="M32 50c-2-9 0-18 8-26" fill="none" stroke="#ECFDF5" stroke-width="2.6" stroke-linecap="round"/>
-  <circle cx="22" cy="17" r="4.5" fill="#38BDF8"/>
-  <circle cx="42" cy="17" r="4.5" fill="#FB923C"/>
-  <circle cx="32" cy="12" r="3.5" fill="#FACC15"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-320 -320 640 640" role="img" aria-label="Terapias Integrales"><title>Terapias Integrales</title>
+<g transform="rotate(0)" fill="#4CC9A0" color="#4CC9A0"><circle cx="0" cy="-208" r="34"/><path d="M-150 -250 C-120 -34 120 -34 150 -250 C100 -100 -100 -100 -150 -250Z" stroke="currentColor" stroke-width="8" stroke-linejoin="round"/></g>
+<g transform="rotate(90)" fill="#F26B33" color="#F26B33"><circle cx="0" cy="-208" r="34"/><path d="M-150 -250 C-120 -34 120 -34 150 -250 C100 -100 -100 -100 -150 -250Z" stroke="currentColor" stroke-width="8" stroke-linejoin="round"/></g>
+<g transform="rotate(180)" fill="#6CF0D0" color="#6CF0D0"><circle cx="0" cy="-208" r="34"/><path d="M-150 -250 C-120 -34 120 -34 150 -250 C100 -100 -100 -100 -150 -250Z" stroke="currentColor" stroke-width="8" stroke-linejoin="round"/></g>
+<g transform="rotate(270)" fill="#E88AE6" color="#E88AE6"><circle cx="0" cy="-208" r="34"/><path d="M-150 -250 C-120 -34 120 -34 150 -250 C100 -100 -100 -100 -150 -250Z" stroke="currentColor" stroke-width="8" stroke-linejoin="round"/></g>
+<g transform="rotate(45)" fill="#1B7A66" color="#1B7A66"><circle cx="0" cy="-208" r="34"/><path d="M-150 -250 C-120 -34 120 -34 150 -250 C100 -100 -100 -100 -150 -250Z" stroke="currentColor" stroke-width="8" stroke-linejoin="round"/></g>
+<g transform="rotate(135)" fill="#F2EC1B" color="#F2EC1B"><circle cx="0" cy="-208" r="34"/><path d="M-150 -250 C-120 -34 120 -34 150 -250 C100 -100 -100 -100 -150 -250Z" stroke="currentColor" stroke-width="8" stroke-linejoin="round"/></g>
+<g transform="rotate(225)" fill="#C23FE8" color="#C23FE8"><circle cx="0" cy="-208" r="34"/><path d="M-150 -250 C-120 -34 120 -34 150 -250 C100 -100 -100 -100 -150 -250Z" stroke="currentColor" stroke-width="8" stroke-linejoin="round"/></g>
+<g transform="rotate(315)" fill="#9EEF1A" color="#9EEF1A"><circle cx="0" cy="-208" r="34"/><path d="M-150 -250 C-120 -34 120 -34 150 -250 C100 -100 -100 -100 -150 -250Z" stroke="currentColor" stroke-width="8" stroke-linejoin="round"/></g>
+<circle r="36" fill="#1B7A66"/></svg>
