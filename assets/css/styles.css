@@ -728,3 +728,40 @@ body.splash-lock { overflow: hidden; }
 .footer__legal { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: .84rem; }
 [hidden] { display: none !important; }
 .page-hero .ldots { display: flex; margin: -4px 0 16px; }
+
+/* ==========================================================
+   Ajustes para celulares angostos y letra agrandada
+   ========================================================== */
+/* Los hijos de grillas no pueden ser más anchos que la pantalla */
+.hero__grid > *, .page-hero__grid > *, .about > *, .faq-grid > *, .contact-grid > *,
+.join__grid > *, .quiz-wrap > *, .page-layout > *, .programs > *, .footer__grid > * { min-width: 0; }
+/* Títulos: tamaño que siempre entra en pantalla y corte de palabra con guion si hiciera falta */
+h1, h2 { overflow-wrap: break-word; hyphens: manual; }
+h1 { font-size: min(clamp(2rem, 6.2vw, 3.7rem), 8.6vw); }
+.page-hero h1 { font-size: min(clamp(1.9rem, 5.4vw, 3.2rem), 8.4vw); }
+h2 { font-size: min(clamp(1.7rem, 4.2vw, 2.6rem), 7.6vw); }
+@media (max-width: 599px) {
+  .hl { white-space: normal; }
+  .hero__lead { max-width: none; }
+  .badge { font-size: .84rem; }
+}
+.opts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.opts--wide { grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 600px) { .opts { grid-template-columns: repeat(3, minmax(0, 1fr)); } .opts--wide { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 379px) { .opts { grid-template-columns: minmax(0, 1fr); } }
+.opt { min-width: 0; overflow-wrap: anywhere; }
+.hero__facts { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.hero__facts li { min-width: 0; }
+.hero__facts strong { font-size: min(1.5rem, 6.4vw); }
+.hero__facts span { overflow-wrap: anywhere; }
+@media (max-width: 359px) { .hero__facts { gap: 8px; } .hero__facts li { padding: 10px 8px; } }
+.info-list { grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 600px) { .info-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.info > div { min-width: 0; overflow-wrap: anywhere; }
+.hero__facts span { overflow-wrap: break-word; }
+@media (max-width: 439px) {
+  .hero__facts { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .hero__facts li { display: flex; align-items: baseline; gap: 12px; padding: 10px 16px; }
+  .hero__facts strong { font-size: 1.35rem; min-width: 3.2ch; }
+  .hero__facts span { font-size: .9rem; }
+}
