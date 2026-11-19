@@ -207,8 +207,8 @@
 
   /* ---------- "Consultar" desde tarjetas: precarga la especialidad ---------- */
   const espSelect = $("#f-esp");
-  const markSelect = () => espSelect.classList.toggle("has-value", !!espSelect.value);
-  espSelect.addEventListener("change", markSelect);
+  const markSelect = () => $$(".field select").forEach((sel) => sel.classList.toggle("has-value", !!sel.value));
+  $$(".field select").forEach((sel) => sel.addEventListener("change", markSelect));
   $$(".js-wa-topic").forEach((a) => a.addEventListener("click", () => {
     const topic = a.dataset.topic;
     const opt = [...espSelect.options].find((o) => o.text === topic);
@@ -245,6 +245,45 @@
     toast("Abriendo WhatsApp…");
   });
   ["#f-name", "#f-esp"].forEach((s) => $(s).addEventListener("input", (e) => {
+    if (e.target.closest(".field").classList.contains("is-invalid")) setError(e.target);
+  }));
+
+  /* ---------- Trabajá con nosotros: chips + postulación ---------- */
+  const profSelect = $("#j-prof");
+  const chips = $$(".chip");
+  const syncChips = () => chips.forEach((c) => c.setAttribute("aria-pressed", String(c.dataset.prof === profSelect.value)));
+  syncChips();
+  chips.forEach((chip) => chip.addEventListener("click", () => {
+    profSelect.value = chip.dataset.prof;
+    markSelect(); syncChips();
+    if (profSelect.closest(".field").classList.contains("is-invalid")) setError(profSelect);
+    if (window.matchMedia("(max-width: 959px)").matches) {
+      $("#postulacion").scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+      setTimeout(() => $("#j-name").focus({ preventScroll: true }), 600);
+    }
+  }));
+  profSelect.addEventListener("change", syncChips);
+
+  const joinForm = $("#postulacion");
+  joinForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const name = $("#j-name"), mat = $("#j-mat"), jmsg = $("#j-msg");
+    let ok = true;
+    if (name.value.trim().length < 2) { setError(name, "Contanos tu nombre, por favor."); ok = false; } else setError(name);
+    if (!profSelect.value) { setError(profSelect, "Elegí tu profesión."); ok = false; } else setError(profSelect);
+    if (!ok) { $(".is-invalid input, .is-invalid select", joinForm)?.focus(); return; }
+    const lines = [
+      "Hola Terapias Integrales, me gustaría sumarme al equipo.",
+      `• Nombre: ${name.value.trim()}`,
+      `• Profesión: ${profSelect.value}`,
+      mat.value.trim() && `• Matrícula: ${mat.value.trim()}`,
+      jmsg.value.trim() && `• Experiencia / disponibilidad: ${jmsg.value.trim()}`,
+      "Les envío mi CV a continuación.",
+    ].filter(Boolean);
+    window.open(waLink(lines.join("\n")), "_blank", "noopener");
+    toast("Abriendo WhatsApp… ¡No olvides adjuntar tu CV!");
+  });
+  ["#j-name", "#j-prof"].forEach((sel) => $(sel).addEventListener("input", (e) => {
     if (e.target.closest(".field").classList.contains("is-invalid")) setError(e.target);
   }));
 

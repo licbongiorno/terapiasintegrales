@@ -161,6 +161,7 @@
         <li><a href="#nosotros">Nosotros</a></li>
         <li><a href="#especialidades">Especialidades</a></li>
         <li><a href="#programas">Integración Escolar</a></li>
+        <li><a href="#trabaja-con-nosotros">Sumate</a></li>
         <li><a href="#ubicacion">Ubicación</a></li>
         <li><a href="#contacto">Contacto</a></li>
         <li class="nav__cta-mobile"><a class="btn btn--primary js-wa" href="https://wa.me/5493515318080?text=Hola%20Terapias%20Integrales%2C%20quisiera%20hacer%20una%20consulta%20por%20un%20turno." target="_blank" rel="noopener">Solicitar Turno</a></li>
@@ -401,6 +402,84 @@
       </div>
     </section>
 
+    <!-- ================= TRABAJÁ CON NOSOTROS ================= -->
+    <section class="section join" id="trabaja-con-nosotros" aria-labelledby="join-title">
+      <div class="join__bg" aria-hidden="true"><span></span><span></span></div>
+      <div class="container join__grid">
+        <div class="join__copy">
+          <p class="eyebrow reveal">Trabajá con nosotros</p>
+          <h2 id="join-title" class="reveal">¿Sos profesional de la salud? <span class="hl hl--blue">Sumate a nuestro equipo</span></h2>
+          <span class="ldots reveal" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+          <p class="join__lead reveal">
+            Buscamos profesionales comprometidos con el trabajo interdisciplinario para crecer junto a Terapias Integrales en Alta Gracia.
+            Si te apasiona acompañar a pacientes y familias desde una mirada integral, queremos conocerte.
+          </p>
+
+          <p class="join__label reveal">Elegí tu profesión:</p>
+          <ul class="chips reveal" role="list">
+            <li><button type="button" class="chip" data-prof="Psicología">Psicología</button></li>
+            <li><button type="button" class="chip" data-prof="Fonoaudiología">Fonoaudiología</button></li>
+            <li><button type="button" class="chip" data-prof="Psicopedagogía">Psicopedagogía</button></li>
+            <li><button type="button" class="chip" data-prof="Psicomotricidad">Psicomotricidad</button></li>
+            <li><button type="button" class="chip" data-prof="Kinesiología">Kinesiología</button></li>
+            <li><button type="button" class="chip" data-prof="Nutrición">Nutrición</button></li>
+            <li><button type="button" class="chip" data-prof="Acompañamiento terapéutico">Acompañante terapéutico</button></li>
+            <li><button type="button" class="chip" data-prof="Integración escolar (MAI)">Maestra/o de integración</button></li>
+          </ul>
+
+          <ul class="perks">
+            <li class="perk reveal"><span class="perk__icon" aria-hidden="true"><svg><use href="#i-hands"/></svg></span><div><h3>Trabajo en equipo real</h3><p>Ateneos y reuniones interdisciplinarias para pensar cada caso en conjunto.</p></div></li>
+            <li class="perk reveal" data-delay="1"><span class="perk__icon" aria-hidden="true"><svg><use href="#i-pin"/></svg></span><div><h3>Espacio en Alta Gracia</h3><p>Consultorios en Deán Funes 56, a pasos del Tajamar, de lunes a viernes de 8 a 20 hs.</p></div></li>
+            <li class="perk reveal" data-delay="2"><span class="perk__icon" aria-hidden="true"><svg><use href="#i-psp"/></svg></span><div><h3>Crecimiento profesional</h3><p>Intercambio con colegas de distintas disciplinas y aprendizaje continuo.</p></div></li>
+          </ul>
+        </div>
+
+        <form class="form join__form reveal" id="postulacion" data-delay="1" novalidate aria-labelledby="join-form-title">
+          <h3 id="join-form-title">Postulate</h3>
+          <p class="form__hint">Completá tus datos y continuamos por WhatsApp, donde podés adjuntar tu CV.</p>
+
+          <div class="field">
+            <input id="j-name" name="nombre" type="text" autocomplete="name" placeholder=" " required minlength="2">
+            <label for="j-name">Nombre y apellido</label>
+            <span class="field__error" aria-live="polite"></span>
+          </div>
+
+          <div class="field">
+            <select id="j-prof" name="profesion" required>
+              <option value="" selected disabled hidden></option>
+              <option>Psicología</option>
+              <option>Fonoaudiología</option>
+              <option>Psicopedagogía</option>
+              <option>Psicomotricidad</option>
+              <option>Kinesiología</option>
+              <option>Nutrición</option>
+              <option>Acompañamiento terapéutico</option>
+              <option>Integración escolar (MAI)</option>
+              <option>Otra profesión</option>
+            </select>
+            <label for="j-prof">Profesión</label>
+            <span class="field__error" aria-live="polite"></span>
+          </div>
+
+          <div class="field">
+            <input id="j-mat" name="matricula" type="text" placeholder=" ">
+            <label for="j-mat">Matrícula profesional (opcional)</label>
+          </div>
+
+          <div class="field">
+            <textarea id="j-msg" name="mensaje" rows="3" placeholder=" " maxlength="600"></textarea>
+            <label for="j-msg">Contanos sobre tu experiencia y disponibilidad</label>
+          </div>
+
+          <button class="btn btn--primary btn--lg btn--block magnetic" type="submit">
+            <svg aria-hidden="true" width="20" height="20"><use href="#i-wa"/></svg>
+            Enviar postulación
+          </button>
+          <p class="form__privacy">Al abrir WhatsApp, adjuntá tu CV en PDF.</p>
+        </form>
+      </div>
+    </section>
+
     <!-- ================= UBICACIÓN + CONTACTO ================= -->
     <section class="section" id="ubicacion" aria-labelledby="ubi-title">
       <div class="container">
@@ -509,6 +588,7 @@
           <li><a href="#especialidades">Especialidades</a></li>
           <li><a href="#programas">Integración escolar</a></li>
           <li><a href="#faq">Preguntas frecuentes</a></li>
+          <li><a href="#trabaja-con-nosotros">Trabajá con nosotros</a></li>
           <li><a href="#ubicacion">Ubicación</a></li>
         </ul>
       </nav>
